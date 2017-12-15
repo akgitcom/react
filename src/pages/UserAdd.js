@@ -145,9 +145,15 @@ UserAdd = formProvider({
         rules: [
             {
                 pattern: function (value) {
-                    return value > 0 && value < 5;
+                    return value > 0;
                 },
                 error: '请选择部门'
+            },
+            {
+                pattern: function (value) {
+                    return value < 5;
+                },
+                error: '请选择1-4之间的部门'
             }
         ]
     },
@@ -156,7 +162,7 @@ UserAdd = formProvider({
         rules: [
             {
                 pattern: function (value) {
-                    return value >= 0 && value <2;
+                    return value >= 0;
                 },
                 error: '请选择状态'
             }
