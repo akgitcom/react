@@ -22,7 +22,7 @@ class UserAdd extends React.Component {
                 },
                 department_id: {
                     valid: false,
-                    value: 1,
+                    value: '',
                     error: ''
                 },
                 status: {
@@ -131,7 +131,7 @@ class UserAdd extends React.Component {
                         name: '',
                         email: '',
                         password: '',
-                        department_id: 0,
+                        department_id: '',
                         status: -1
                     });
                 } else {
