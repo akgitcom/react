@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom'
 
 import UserAddPage from './pages/UserAdd';
+import UserEditPage from './pages/UserEdit';
 import UserListPage from './pages/UserList';
 import HomePage from './pages/Home';
 
@@ -20,6 +21,7 @@ const App = () => (
         <div>
             <Route exact path="/" component={HomePage} />
             <Route path="/user/add" component={UserAddPage} />
+            <Route path="/user/edit/:id" component={UserEditPage} />
             <Route path="/user/list" component={UserListPage} />
         </div>
     </div>

@@ -4,16 +4,13 @@ import {
     Switch,
     Link
 } from 'react-router-dom'
+import HomeLayout from '../layouts/HomeLayout';
 const Home = () => (
-    <div>
-        <header>
-            <h1>Welcome,Dashboard</h1>
-        </header>
-        <main>
-            <Link to="/user/add">添加用户</Link>
-            <Link to="/user/list">用户列表</Link>
-        </main>
-    </div>
+    <HomeLayout title="Welcome">
+        <Link to="/user/list">用户列表</Link>
+        <br />
+        <Link to="/user/add">添加用户</Link>
+    </HomeLayout>
 )
 
 export default Home;

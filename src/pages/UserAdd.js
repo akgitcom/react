@@ -1,6 +1,10 @@
 import React from 'react';
 import FormItem from "../components/FormItem";
 import formProvider from '../utils/formProvider';
+
+import HomeLayout from '../layouts/HomeLayout';
+import UserEditor from '../components/UserEditor';
+
 class UserAdd extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
@@ -33,7 +37,7 @@ class UserAdd extends React.Component {
                 // 所以可以使用res.id来判断添加是否成功
                 if (res.id) {
                     alert('添加用户成功');
-                    this.props.history.push({ pathname: '/user/list'});
+                    this.props.history.push({ pathname: '/user/list' });
                 } else {
                     alert('添加失败');
                 }
@@ -43,58 +47,18 @@ class UserAdd extends React.Component {
     render() {
         const { form: { name, email, password, department_id, status }, onFormChange } = this.props;
         return (
-            <div>
-                <header>
-                    <h1>添加用户</h1>
-                </header>
-
-                <main>
-                    <form onSubmit={(e) => this.handleSubmit(e)}>
-                        <FormItem label="用户名：" valid={name.valid} error={name.error}>
-                            <input
-                                type="text"
-                                value={name.value}
-                                onChange={(e) => onFormChange('name', e.target.value)}
-                            />
-                        </FormItem>
-                        <FormItem label="邮箱：" valid={email.valid} error={email.error}>
-                            <input
-                                type="text"
-                                value={email.value}
-                                onChange={(e) => onFormChange('email', e.target.value)}
-                            />
-                        </FormItem>
-                        <FormItem label="密码：" valid={password.valid} error={password.error}>
-                            <input
-                                type="text"
-                                value={password.value}
-                                onChange={(e) => onFormChange('password', e.target.value)}
-                            />
-                        </FormItem>
-                        <FormItem label="部门：" valid={department_id.valid} error={department_id.error}>
-                            <input
-                                type="number"
-                                value={department_id.value}
-                                onChange={(e) => onFormChange('department_id', e.target.value)}
-                            />
-                        </FormItem>
-                        <FormItem label="状态：" valid={status.valid} error={status.error}>
-                            <select
-                                value={status.value}
-                                onChange={(e) => onFormChange('status', e.target.value)}
-                            >
-                                <option value="-1">请选择</option>
-                                <option value="0">开启</option>
-                                <option value="1">禁用</option>
-                            </select>
-                        </FormItem>
-                        <input type="submit" value="提交" />
-                    </form>
-                </main>
-            </div>
+            <HomeLayout title="添加用户">
+                <UserEditor />
+            </HomeLayout>
         );
     }
 }
+
+
+UserAdd.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
+
 UserAdd = formProvider({
     name: {
         defaultValue: '',
@@ -170,9 +134,5 @@ UserAdd = formProvider({
         ]
     }
 })(UserAdd);
-
-UserAdd.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
 
 export default UserAdd;

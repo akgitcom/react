@@ -1,5 +1,5 @@
 import React from "react";
-
+import HomeLayout from '../layouts/HomeLayout';
 class UserList extends React.Component {
     constructor(props) {
         super(props);
@@ -16,6 +16,10 @@ class UserList extends React.Component {
                     userList: res
                 })
             })
+    }
+
+    handleEdit(user) {
+        this.props.history.push({ pathname: '/user/edit/' + user.id });
     }
 
     handleDel(user) {
@@ -42,12 +46,7 @@ class UserList extends React.Component {
     render() {
         const { userList } = this.state;
         return (
-            <div>
-                <header>
-                    <h1>用户列表</h1>
-                </header>
-
-                <main>
+            <HomeLayout title="用户列表">
                     <table>
                         <thead>
                             <tr>
@@ -80,10 +79,12 @@ class UserList extends React.Component {
                             }
                         </tbody>
                     </table>
-                </main>
-            </div>
+                </HomeLayout>
         )
     }
 }
 
+UserList.contextTypes = {
+    router: React.PropTypes.object.isRequired
+}
 export default UserList;
