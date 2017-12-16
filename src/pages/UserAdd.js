@@ -33,6 +33,7 @@ class UserAdd extends React.Component {
                 // 所以可以使用res.id来判断添加是否成功
                 if (res.id) {
                     alert('添加用户成功');
+                    this.props.history.push({ pathname: '/user/list'});
                 } else {
                     alert('添加失败');
                 }
@@ -162,12 +163,16 @@ UserAdd = formProvider({
         rules: [
             {
                 pattern: function (value) {
-                    return value >= 0;
+                    return value >= 0 && value < 2;
                 },
                 error: '请选择状态'
             }
         ]
     }
 })(UserAdd);
+
+UserAdd.contextTypes = {
+    router: React.PropTypes.object.isRequired
+};
 
 export default UserAdd;
