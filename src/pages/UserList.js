@@ -1,5 +1,6 @@
 import React from "react";
 import HomeLayout from '../layouts/HomeLayout';
+import request, { get } from '../utils/request';
 class UserList extends React.Component {
     constructor(props) {
         super(props);
@@ -9,13 +10,36 @@ class UserList extends React.Component {
     }
 
     componentDidMount() {
-        fetch('http://localhost:8080/api/user')
-            .then(res => res.json())
-            .then(res => {
-                this.setState({
-                    userList: res
-                })
+        // request('get','http://localhost:8080/api/user',{})
+        //     .then(res => res.json())
+        //     .then(res => {
+        //         this.setState({
+        //             userList: res
+        //         })
+        //     }).catch(err => console.log(err))
+        return fetch('http://localhost:8080/api/user', {
+            mode: "cors",
+            method:'get',
+            headers: {
+                'Accept': 'application/json',
+                // 'Content-Type': 'application/json',
+                "Content-Type": "application/x-www-form-urlencoded",
+                'Origin': '',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('access_token') || ''
+            },
+            body:{}
+        }).then(res => {
+            console.log(res)
+            if (res.ok) {
+                return res.json()
+            } else {
+                throw "network error";
+            }
+        }).then(json => {
+            this.setState({
+                userList: json
             })
+        }).catch(err => console.log(err))
     }
 
     handleEdit(user) {

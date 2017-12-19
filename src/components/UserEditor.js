@@ -2,7 +2,7 @@ import React from 'react';
 import FormItem from '../components/FormItem';
 import formProvider from '../utils/formProvider';
 import { withRouter } from 'react-router'
-
+import request, { get } from '../utils/request';
 class UserEditor extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
@@ -22,6 +22,14 @@ class UserEditor extends React.Component {
             apiUrl += '/' + editTarget.id;
             method = 'PUT';
         }
+
+        // request(method, apiUrl, {
+        //     name: name.value,
+        //     email: email.value,
+        //     password: password.value,
+        //     department_id: department_id.value,
+        //     status: status.value
+        // })
         fetch(apiUrl, {
             mode: "cors",
             method,
@@ -120,8 +128,8 @@ UserEditor = formProvider({
                 error: '请输入用户名'
             },
             {
-                pattern: /^.{1,8}$/,
-                error: '用户名最多8个字符'
+                pattern: /^.{6,8}$/,
+                error: '用户名最多8个字符，最少6个字符'
             }
         ]
     },
@@ -150,8 +158,8 @@ UserEditor = formProvider({
                 error: '请输入密码'
             },
             {
-                pattern: /^.{1,8}$/,
-                error: '密码最多8个字符'
+                pattern: /^.{8,12}$/,
+                error: '密码最多12个字符，最少8个字符'
             }
         ]
     },
