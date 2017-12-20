@@ -10,36 +10,40 @@ class UserList extends React.Component {
     }
 
     componentDidMount() {
-        // request('get','http://localhost:8080/api/user',{})
-        //     .then(res => res.json())
-        //     .then(res => {
-        //         this.setState({
-        //             userList: res
-        //         })
-        //     }).catch(err => console.log(err))
-        return fetch('http://localhost:8080/api/user', {
-            mode: "cors",
-            method:'get',
-            headers: {
-                'Accept': 'application/json',
-                // 'Content-Type': 'application/json',
-                "Content-Type": "application/x-www-form-urlencoded",
-                'Origin': '',
-                'Authorization': 'Bearer ' + sessionStorage.getItem('access_token') || ''
-            },
-            body:{}
-        }).then(res => {
-            console.log(res)
-            if (res.ok) {
-                return res.json()
-            } else {
-                throw "network error";
-            }
-        }).then(json => {
-            this.setState({
-                userList: json
-            })
-        }).catch(err => console.log(err))
+        get('http://localhost:8080/api/user')
+            .then(res => {
+                if (res.ok === false) {
+                    this.props.history.push('/login')
+                    return Promise.reject(res.msg);
+                } else {
+                    this.setState({
+                        userList: res
+                    })
+                }
+            }).catch(err => console.log(err))
+        // return fetch('http://localhost:8080/api/user', {
+        //     mode: "cors",
+        //     method:'get',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         // 'Content-Type': 'application/json',
+        //         "Content-Type": "application/x-www-form-urlencoded",
+        //         'Origin': '',
+        //         'Authorization': 'Bearer ' + sessionStorage.getItem('access_token') || ''
+        //     },
+        //     body:{}
+        // }).then(res => {
+        //     console.log(res)
+        //     if (res.ok) {
+        //         return res.json()
+        //     } else {
+        //         throw "network error";
+        //     }
+        // }).then(json => {
+        //     this.setState({
+        //         userList: json
+        //     })
+        // }).catch(err => console.log(err))
     }
 
     handleEdit(user) {
@@ -70,40 +74,40 @@ class UserList extends React.Component {
     render() {
         const { userList } = this.state;
         return (
-            <HomeLayout title="用户列表">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>用户ID</th>
-                                <th>用户名</th>
-                                <th>邮箱</th>
-                                <th>部门</th>
-                                <th>状态</th>
-                                <th>操作</th>
-                            </tr>
-                        </thead>
+            <HomeLayout title="用户列表" >
+                <table>
+                    <thead>
+                        <tr>
+                            <th>用户ID</th>
+                            <th>用户名</th>
+                            <th>邮箱</th>
+                            <th>部门</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
 
-                        <tbody>
-                            {
-                                userList.map((user) => {
-                                    return (
-                                        <tr key={user.id}>
-                                            <td>{user.id}</td>
-                                            <td>{user.name}</td>
-                                            <td>{user.email}</td>
-                                            <td>{user.department_id}</td>
-                                            <td>{user.status}</td>
-                                            <td>
-                                                <a href="javascript:void(0)" onClick={() => this.handleEdit(user)}>编辑</a>
-                                                <a href="javascript:void(0)" onClick={() => this.handleDel(user)}>删除</a>
-                                            </td>
-                                        </tr>
-                                    );
-                                })
-                            }
-                        </tbody>
-                    </table>
-                </HomeLayout>
+                    <tbody>
+                        {
+                            userList.map((user) => {
+                                return (
+                                    <tr key={user.id}>
+                                        <td>{user.id}</td>
+                                        <td>{user.name}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.department_id}</td>
+                                        <td>{user.status}</td>
+                                        <td>
+                                            <a href="javascript:void(0)" onClick={() => this.handleEdit(user)}>编辑</a>
+                                            <a href="javascript:void(0)" onClick={() => this.handleDel(user)}>删除</a>
+                                        </td>
+                                    </tr>
+                                );
+                            })
+                        }
+                    </tbody>
+                </table>
+            </HomeLayout>
         )
     }
 }

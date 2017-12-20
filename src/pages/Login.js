@@ -18,49 +18,52 @@ class Login extends React.Component {
             alert('请输入账号或密码');
             return;
         }
-        
-        fetch('http://localhost:8080/api/login', {
-            mode: "cors",
-            method:'post',
-            headers: {
-                'Accept': 'application/json',
-                // 'Content-Type': 'application/json',
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: JSON.stringify({
-                username: username.value,
-                password: password.value
-            })
-        }).then(res => {
-            console.log(res)
-            if (res.ok) {
-                return res.json();
-            } else {
-                throw "network error";
-            }
-        }).then(json => {
-                console.log(json.token)
-                if (json.token) {
-                    const token = json.token;
-                    sessionStorage.setItem('access_token', token);
-                    this.props.history.push('/');
-                }
-                else {
-                    throw "request error";
-                }
-        }).catch(err => console.log(err))
 
-        // post('http://localhost:8080/api/login', {
-        //     username: username.value,
-        //     password: password.value
-        // })
-        //     .then((res) => {
-        //         if (res) {
-        //             this.props.history.push('/');
-        //         } else {
-        //             alert('登录失败，账号或密码错误');
-        //         }
+        // fetch('http://localhost:8080/api/login', {
+        //     mode: "cors",
+        //     method: 'post',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         // 'Content-Type': 'application/json',
+        //         "Content-Type": "application/x-www-form-urlencoded",
+        //     },
+        //     body: JSON.stringify({
+        //         username: username.value,
+        //         password: password.value
         //     })
+        // }).then(res => {
+        //     console.log(res)
+        //     if (res.ok) {
+        //         return res.json();
+        //     } else {
+        //         throw "用户名密码错误！";
+        //     }
+        // }).then(json => {
+        //     console.log(json.token)
+        //     if (json.token) {
+        //         const token = json.token;
+        //         sessionStorage.setItem('access_token', token);
+        //         this.props.history.push('/');
+        //     }
+        //     else {
+        //         throw "request error";
+        //     }
+        // }).catch(err => console.log(err))
+
+        post('http://localhost:8080/api/login', {
+            username: username.value,
+            password: password.value
+         }).then((res) => {
+             console.log(res)
+            if (res.token) {
+                const token = res.token;
+                sessionStorage.setItem('access_token', token);
+                this.props.history.push('/');
+            }
+            else {
+                return Promise.reject(res.msg);
+            }
+        }).catch(err => console.log(err))
     }
 
     render() {

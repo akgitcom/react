@@ -1,3 +1,5 @@
+import createBrowserHistory from 'history/createBrowserHistory'
+const history = createBrowserHistory()
 export default function request(method, url, body) {
     method = method.toUpperCase();
     if (method === 'GET') {
@@ -6,12 +8,12 @@ export default function request(method, url, body) {
     } else {
         body = body && JSON.stringify(body);
     }
-    
+
     return fetch(url, {
         mode: "cors",
         method,
         headers: {
-            'Accept': 'application/json', 
+            'Accept': 'application/json',
             // 'Content-Type': 'application/json',
             "Content-Type": "application/x-www-form-urlencoded",
             'Origin': '',
@@ -19,22 +21,20 @@ export default function request(method, url, body) {
         },
         body
     }).then(res => {
-        if (res.status === 401) {
-            hashHistory.push('/login');
-            return Promise.reject('Unauthorized.');
+        console.log(res.ok === "false", res.ok === false)
+        if (res.ok === false) {
+            return JSON.parse('{"ok":false,"msg":"Unauthorized."}');
         } else {
             return res.json();
         }
     }).then(json => {
-            console.log(json.token)
-            if (json.token) {
-                const token = json.token;
-                sessionStorage.setItem('access_token', token);
-                return json.token;
-            }
-            else {
-                throw "request error";
-            }
+        console.log(json)
+        if (json) {
+            return json;
+        }
+        else {
+            throw "request error";
+        }
     }).catch(err => console.log(err))
 }
 
